@@ -1,0 +1,272 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{tikz}
+
+\newcommand{\logofooter}{}
+\newcommand{\logotitle}{
+    % \parbox{\textwidth}{
+    % \begin{tikzpicture}
+    %     \node at (0,0) {
+    %     \includegraphics[width=4cm]{logos/GOE_Logo_Quer_IPC_Farbe_RGB.png}};
+    %     \node at (9, 0) {
+    %     \includegraphics[width=6cm]{logos/MPI_Logo_V1_1-line_Master_black.pdf}};
+    % \end{tikzpicture}
+    % }
+}
+\newcommand{\logoheader}{}
+
+\definecolor{textcolor}{RGB}{0, 0, 0}
+\definecolor{title}{RGB}{31, 120, 180}
+\definecolor{footercolor}{RGB}{0, 0, 0}
+\definecolor{bg}{RGB}{250, 250, 250}
+\newcommand{\beamertextcolor}{textcolor}
+\newcommand{\beamerbgcolor}{bg}
+\newcommand{\beamerfootertextcolor}{footercolor}
+\newcommand{\beamertitlecolor}{title}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      biblatex stuff for citations             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+    backend=biber,
+    doi=false,
+    isbn=false,
+    maxbibnames=2,
+    maxcitenames=2,%
+    style=numeric,
+    sorting=none,
+    url=false,
+    eprint=false,
+    giveninits=true]{biblatex}
+\addbibresource{bibliography.bib}
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryBibitem{\clearfield{day}}
+% this makes it possible to add backup slides, without counting them
+\usepackage{appendixnumberbeamer}
+\renewcommand{\appendixname}{\texorpdfstring{\translate{appendix}}{appendix}}
+
+\DeclareNameFormat{family}{%
+  \usebibmacro{name:family}
+      {\namepartfamily}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}%
+  \usebibmacro{name:andothers}}
+
+\newbibmacro*{cite:full}{%
+  \usebibmacro{cite:full:citepages}%
+  \printtext[bibhypertarget]{%
+    \usedriver
+      {\DeclareNameAlias{sortname}{family}}
+      {\thefield{entrytype}}}%
+  \usebibmacro{shorthandintro}}
+
+\DeclareFieldInputHandler{journaltitle}{%
+  \def\NewValue{\JournalTitle{#1}}}
+
+\DeclareCiteCommand{\yearcite}{}{%
+    \printnames[family]{author} (\printfield{year})}{;}{}%
+\DeclareCiteCommand{\shortcite}{}{%
+    \printnames[family]{author}, \printfield{journaltitle} \textbf{\printfield{volume}}, \printfield{pages} (\printfield{year})}{;}{}%
+\DeclareCiteCommand{\bookcite}{}{%
+    \printnames{author}. \emph{\printfield{title}}, \printlist{publisher} \printfield{year}}{;}{}%
+\DeclareCiteCommand{\preprintcite}{}{%
+    \printnames[family]{author} (\printfield{year}). \printfield{note}}{;}{}%
+\usepackage{hyperref}
+
+\renewcommand*\footnoterule{}
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1\\\vspace*{-1em}}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+\renewcommand{\footcite}[1]{\blfootnote{\longcite{#1}\\\vspace*{-1em}}}
+\newcommand{\footnotecite}[1]{\footnote{\longcite{#1}\\\vspace*{-1em}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     graphics and tikz                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{color}
+\usepackage{transparent}
+\usepackage{subfig}
+\graphicspath{{graphics/}}
+\captionsetup[subfigure]{labelformat=empty}
+\captionsetup[figure]{labelformat=empty}
+
+\usepackage{csquotes}
+
+% tikz stuff
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\tikzstyle{every picture}+=[remember picture]
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{mindmap,backgrounds,arrows.meta}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{decorations.pathmorphing,decorations.text}
+\tikzset{snake it/.style={decorate, decoration=snake}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           colors                                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{red}{HTML}{E84646}
+\definecolor{blue}{HTML}{499cbf}
+\definecolor{gold}{HTML}{b3a235}
+\definecolor{purple}{HTML}{985CC9}
+\definecolor{green}{HTML}{068624}
+\definecolor{background}{rgb}{113,113,113}
+\definecolor{darkblue}{HTML}{004472}
+\definecolor{paperred}{HTML}{DB2521}
+\definecolor{paperblue}{HTML}{0F2A89}
+\definecolor{paperblack}{HTML}{000000}
+
+\DeclareFieldFormat{pages}{\mkfirstpage[{\mkpageprefix[bookpagination]}]{#1}}
+\newcommand{\btVFill}{\vskip0pt plus 1filll}
+\graphicspath{{graphics/}}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          maths stuff                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\transpose}[1]{\prescript{t}{}{#1}}
+\newcommand*{\conjugate}[1]{\overline{#1}}
+\newcommand*{\abs}[1]{\lvert#1\rvert}
+\newcommand*{\Mod}{\mathrm{mod}}
+\newcommand{\symdif}{\mathbin\triangle}
+\DeclareMathOperator{\Graph}{Graph}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator*{\grad}{grad}
+\DeclareMathOperator*{\Div}{div}
+\DeclareMathOperator*{\rot}{rot}
+\DeclareMathOperator{\sig}{sig}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\re}{Re}
+\newcommand{\vcentcolon}{\mathop{:}}
+\renewcommand{\d}{\text{d}}
+\newcommand{\D}{\text{D}}
+\newcommand{\substder}{\frac{\D }{\D t}}
+\newcommand{\totalder}{\frac{\d }{\d t}}
+
+\newcommand{\pif}[2]{\frac{\partial #1}{\partial #2}}       % Partielle Abl.
+\newcommand{\piff}[2]{\frac{\partial^2 #1}{\partial #2^2}}  % Partielle 2. Abl.
+\newcommand{\dif}[2]{\frac{\d #1}{\d #2}}                   % Ableitung
+\newcommand{\diff}[2]{\frac{\d^2 #1}{\d #2^2}}              % 2. Ableitung
+\renewcommand{\_}[1]{\ensuremath{_\text{#1}}} % Für nicht-kursive Indizes
+\renewcommand{\^}[1]{\ensuremath{^\text{(#1)}}} % Für nicht-kursive Indizes
+
+\usepackage{bbold}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     example tikz pictures                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\reservoir{}
+\def\reservoir(#1,#2){
+    \node (n1) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1-0.34,#2-.27) {};
+    \node (n2) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1+.1,#2-.28) {};
+    \node (n3) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1-0.3,#2-.05) {};
+    \node (n4) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1+.34,#2-.42) {};
+    \node (n5) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1+.2,#2+.36) {};
+    \node (n6) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1,#2+.14) {};
+    \node (n7) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1+.4,#2-.17) {};
+    \node (n8) [draw=red,fill=white,circle,inner sep=0pt,minimum size=5pt] at (#1-.2,#2+.37) {};
+    \draw [red] (n1) to (n2);
+    \draw [red] (n1) to (n8);
+    \draw [red] (n7) to (n5);
+    \draw [red] (n4) to (n3);
+    \draw [red] (n3) to (n1);
+    \draw [red] (n6) to (n7);
+    \draw [red] (n3) to (n8);
+    \draw [red] (n4) to (n8);
+    \draw [red] (n1) to (n5);
+    \node (res) [draw=red,circle,inner sep=0pt,minimum size=40pt] at (#1,#2) {};
+}
+\newcommand{\rbf}[1]{\textcolor{red}{\textbf{#1}}}
+
+\newcommand\data{}
+\def\data(#1,#2,#3){
+  \node (#1) at (#2,#3) {\parbox{.1\textwidth}{\tiny\texttt{01110111}\\\texttt{01100001}\\\texttt{01110110}\\\texttt{01100101}}};
+}
+\newcommand\moredata{}
+\def\moredata(#1,#2,#3){
+  \node (#1) at (#2,#3) {\parbox{.1\textwidth}{\tiny\texttt{01010100}\\\texttt{01101101}\\\texttt{10010100}\\\texttt{01110101}}};
+}
+
+\makeatletter
+\def\grd@save@target#1{%
+  \def\grd@target{#1}}
+\def\grd@save@start#1{%
+  \def\grd@start{#1}}
+\tikzset{
+  grid/.style={
+    to path={%
+      \pgfextra{%
+        \edef\grd@@target{(\tikztotarget)}%
+        \tikz@scan@one@point\grd@save@target\grd@@target\relax
+        \edef\grd@@start{(\tikztostart)}%
+        \tikz@scan@one@point\grd@save@start\grd@@start\relax
+        \draw[minor help lines] (\tikztostart) grid (\tikztotarget);
+        \draw[major help lines] (\tikztostart) grid (\tikztotarget);
+        \grd@start
+        \pgfmathsetmacro{\grd@xa}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@ya}{\the\pgf@y/1cm}
+        \grd@target
+        \pgfmathsetmacro{\grd@xb}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@yb}{\the\pgf@y/1cm}
+        \pgfmathsetmacro{\grd@xc}{\grd@xa + \pgfkeysvalueof{/tikz/grid/major step}}
+        \pgfmathsetmacro{\grd@yc}{\grd@ya + \pgfkeysvalueof{/tikz/grid/major step}}
+      }
+    }
+  },
+  minor help lines/.style={
+    help lines,
+    step=\pgfkeysvalueof{/tikz/grid/minor step}
+  },
+  major help lines/.style={
+    help lines,
+    line width=\pgfkeysvalueof{/tikz/grid/major line width},
+    step=\pgfkeysvalueof{/tikz/grid/major step}
+  },
+  grid/.cd,
+  minor step/.initial=.2,
+  major step/.initial=1,
+  major line width/.initial=2pt,
+}
+\makeatother
+
+\newcommand\neuralnet{}
+\def\neuralnet(#1,#2,#3,#4){
+    \foreach \n in {0,1,2,3}{
+      \node [draw=red,circle,inner sep=0pt,minimum size=4pt] (magic_l\n) at (#1-.5,#2+.3-\n/5) {};
+      \node [draw=red,circle,inner sep=0pt,minimum size=4pt] (magic_r\n) at (#1+.5,#2+.3-\n/5) {};
+      \node [draw=red,circle,inner sep=0pt,minimum size=4pt] (magic_m\n) at (#1,#2+.3-\n/5) {};
+    }
+    \foreach \n in {1,3}{
+      \foreach \m in {0,2}{
+        \draw [red,->] (magic_l\n) to [in=180,out=0] (magic_m\m);
+        \draw [red,->] (magic_m\n) to [in=180,out=0] (magic_r\m);
+      }
+    }
+    \foreach \n in {0,2}{
+      \foreach \k in {1,3}{
+        \draw [red,->,opacity=1/#3] (magic_l\n) to [in=180,out=0] (magic_m\k);
+        \draw [red,->,opacity=1/#3] (magic_m\n) to [in=180,out=0] (magic_r\k);
+      }
+    }
+    \node [draw=red,rectangle,inner sep=0pt,minimum width=1.2cm,minimum height=.8cm] (#4) at (#1,#2) {};
+}
